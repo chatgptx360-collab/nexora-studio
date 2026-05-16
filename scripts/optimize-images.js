@@ -46,8 +46,22 @@ await process('favicon.png', [
   { name: 'apple-touch-icon.png', width: 180, height: 180 }, // iOS home screen
 ])
 
-await process('logo.png', [
-  { name: 'logo.png', width: 800 }, // wordmark — width-constrained, aspect preserved
-])
+// Logo: first trim the dark padding around the wordmark, then resize.
+// The source image has ~28% empty space on top + ~15% on the left, which
+// makes the rendered logo look tiny + off-center. trim() removes solid
+// borders within the given threshold (0–255).
+{
+  const srcPath = join(PUBLIC_DIR, 'logo.png')
+  const before = (await stat(srcPath)).size
+  console.log(`\n📦 logo.png — ${human(before)} → trimming padding + resizing…`)
+  const trimmedBuf = await sharp(srcPath)
+    .trim({ threshold: 25 }) // anything below RGB ~25/255 is treated as background
+    .resize(640, null, { fit: 'inside' })
+    .png({ quality: 90, compressionLevel: 9 })
+    .toBuffer()
+  await writeFile(join(PUBLIC_DIR, 'logo.png'), trimmedBuf)
+  const meta = await sharp(trimmedBuf).metadata()
+  console.log(`   ✓ logo.png                     ${human(trimmedBuf.length)}  (${meta.width}x${meta.height})`)
+}
 
 console.log('\n✅ Done. Run `npm run build` to verify, then `vercel --prod` to deploy.')

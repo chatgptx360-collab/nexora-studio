@@ -98,6 +98,16 @@ export default function Projects() {
           >
             Projects that <span className="gradient-text">ship & convert.</span>
           </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="mt-5 max-w-xl text-sm text-white/50 text-balance"
+          >
+            Concept showcases of work we love to build. Full case studies coming soon —
+            tap any project to inquire about a similar build.
+          </motion.p>
         </div>
 
         <div className="mt-16 grid md:grid-cols-2 gap-6">
@@ -117,20 +127,22 @@ export default function Projects() {
                 <Mock kind={p.mock} accent={p.accent} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-90" />
 
-                {/* Hover overlay */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
-                  <div className="flex gap-2">
+                {/* Action overlay — always visible on touch, hover-only on desktop */}
+                <div className="absolute inset-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+                  <div className="flex flex-wrap gap-2">
                     <a
-                      href="#"
-                      onClick={(e) => e.preventDefault()}
+                      href="#contact"
+                      aria-label={`Inquire about a project like ${p.title}`}
                       className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white text-black text-xs font-medium hover:bg-white/90 transition"
                     >
                       <ExternalLink className="h-3.5 w-3.5" />
-                      Live Preview
+                      Inquire
                     </a>
                     <a
-                      href="#"
-                      onClick={(e) => e.preventDefault()}
+                      href="https://github.com/chatgptx360-collab"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="View GitHub profile"
                       className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full glass-strong text-xs font-medium hover:bg-white/10 transition"
                     >
                       <Github className="h-3.5 w-3.5" />

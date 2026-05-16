@@ -19,7 +19,7 @@ export default function Footer() {
               <img
                 src="/logo.png"
                 alt="Nexora Studio"
-                className="h-10 sm:h-11 w-auto object-contain"
+                className="h-12 sm:h-14 w-auto object-contain"
                 loading="lazy"
                 decoding="async"
               />

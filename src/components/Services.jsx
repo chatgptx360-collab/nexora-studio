@@ -103,15 +103,17 @@ export default function Services() {
 
         <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {services.map((s, i) => (
-            <motion.div
+            <motion.a
               key={s.title}
+              href="#contact"
+              aria-label={`Inquire about ${s.title}`}
               custom={i}
               variants={card}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.2 }}
               whileHover={{ y: -8 }}
-              className={`group relative overflow-hidden rounded-3xl glass p-7 transition-all duration-500 hover:border-white/20 hover:${s.glow}`}
+              className={`group relative block overflow-hidden rounded-3xl glass p-7 transition-all duration-500 hover:border-white/20 hover:${s.glow}`}
             >
               {/* hover glow */}
               <div className={`pointer-events-none absolute -top-20 -right-20 h-48 w-48 rounded-full bg-gradient-to-br ${s.accent} blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
@@ -125,11 +127,11 @@ export default function Services() {
                 <p className="mt-2 text-sm text-white/60 leading-relaxed">{s.desc}</p>
 
                 <div className="mt-6 inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">
-                  Learn more
+                  Get a quote
                   <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
               </div>
-            </motion.div>
+            </motion.a>
           ))}
         </div>
       </div>

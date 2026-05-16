@@ -60,7 +60,7 @@ export default function Navbar() {
           <img
             src="/logo.png"
             alt="Nexora Studio"
-            className="relative z-10 h-8 sm:h-9 w-auto object-contain"
+            className="relative z-10 h-10 sm:h-12 w-auto object-contain"
             loading="eager"
             decoding="async"
           />
@@ -97,10 +97,10 @@ export default function Navbar() {
 
         <button
           onClick={() => setOpen((v) => !v)}
-          className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-full glass-strong"
+          className="md:hidden inline-flex h-11 w-11 items-center justify-center rounded-full glass-strong"
           aria-label="Toggle menu"
         >
-          {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 

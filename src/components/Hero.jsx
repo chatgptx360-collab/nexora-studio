@@ -66,7 +66,7 @@ export default function Hero() {
       <motion.div
         animate={{ y: [0, -12, 0] }}
         transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
-        className="hidden lg:block absolute bottom-28 left-24 w-52 glass rounded-2xl p-3 shadow-glow-cyan"
+        className="hidden lg:block absolute bottom-16 left-10 w-52 glass rounded-2xl p-3 shadow-glow-cyan"
       >
         <div className="flex items-center justify-between">
           <div>
@@ -83,7 +83,7 @@ export default function Hero() {
       <motion.div
         animate={{ y: [0, 14, 0] }}
         transition={{ duration: 6.5, repeat: Infinity, ease: 'easeInOut' }}
-        className="hidden lg:block absolute bottom-40 right-24 w-44 glass rounded-2xl p-3 shadow-glow-blue"
+        className="hidden lg:block absolute bottom-20 right-10 w-44 glass rounded-2xl p-3 shadow-glow-blue"
       >
         <div className="flex items-center gap-2">
           <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-cyan-glow to-violet-glow flex items-center justify-center">
@@ -114,8 +114,9 @@ export default function Hero() {
           variants={item}
           className="mt-6 font-display font-bold text-balance leading-[1.05] text-5xl sm:text-6xl md:text-7xl lg:text-[88px]"
         >
-          Modern Websites That{' '}
-          <span className="gradient-text">Elevate Brands.</span>
+          Modern Websites
+          <br className="hidden sm:block" />{' '}
+          That <span className="gradient-text">Elevate Brands.</span>
         </motion.h1>
 
         <motion.p

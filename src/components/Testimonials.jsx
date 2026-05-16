@@ -104,6 +104,17 @@ export default function Testimonials() {
             </motion.div>
           ))}
         </div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-10 text-center text-xs text-white/35"
+        >
+          Sample testimonials representing the kind of feedback we aim for —
+          real client quotes will replace these as projects ship.
+        </motion.p>
       </div>
     </section>
   )

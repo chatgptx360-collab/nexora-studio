@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { Analytics } from '@vercel/analytics/react'
 import BackgroundEffects from './components/BackgroundEffects'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -45,9 +46,32 @@ function Loader() {
 export default function App() {
   const [loading, setLoading] = useState(true)
 
+  // Hide the loader once the page is actually painted + assets settled,
+  // but enforce a minimum dwell so the brand flash isn't jarring on fast loads.
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 1100)
-    return () => clearTimeout(t)
+    const MIN_DWELL = 700
+    const MAX_DWELL = 2200
+    const start = performance.now()
+
+    const finish = () => {
+      const elapsed = performance.now() - start
+      const wait = Math.max(0, MIN_DWELL - elapsed)
+      setTimeout(() => setLoading(false), wait)
+    }
+
+    if (document.readyState === 'complete') {
+      finish()
+    } else {
+      window.addEventListener('load', finish, { once: true })
+    }
+
+    // Hard ceiling — never block the page longer than MAX_DWELL.
+    const ceiling = setTimeout(() => setLoading(false), MAX_DWELL)
+
+    return () => {
+      window.removeEventListener('load', finish)
+      clearTimeout(ceiling)
+    }
   }, [])
 
   return (
@@ -68,6 +92,7 @@ export default function App() {
         </main>
         <Footer />
       </div>
+      <Analytics />
     </>
   )
 }
