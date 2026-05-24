@@ -73,50 +73,22 @@ function Field({ icon: Icon, label, type = 'text', name, value, onChange, as = '
 //    safe to keep in committed client-side source. Swap it at formspree.io.
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mykvdwvv'
 
-// 2) Telegram instant-notification bot — pings your phone the moment a lead
-//    lands. Create a bot via @BotFather on Telegram, then grab your chat id
-//    from https://api.telegram.org/bot<TOKEN>/getUpdates after messaging it.
-//    Leave the placeholder values to disable.
-const TELEGRAM_BOT_TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
-const TELEGRAM_CHAT_ID = 'YOUR_TELEGRAM_CHAT_ID'
+// 2) Telegram instant-notification ping — POSTs the lead to our serverless
+//    function at /api/notify-lead, which holds the bot token server-side so
+//    it never ships to the browser. Configure TELEGRAM_BOT_TOKEN and
+//    TELEGRAM_CHAT_ID as environment variables in Vercel to activate it.
 
-// Helper: fire-and-forget Telegram notification. Runs in parallel with
-// Formspree and never blocks the user — if it fails, we silently log and
-// the user still sees the success toast (the email is the source of truth).
+// Fire-and-forget lead ping. Runs in parallel with Formspree and never blocks
+// the user — email is the source of truth, so any failure here is swallowed.
 async function notifyTelegram({ name, email, message }) {
-  if (
-    TELEGRAM_BOT_TOKEN.includes('YOUR_TELEGRAM_BOT_TOKEN') ||
-    TELEGRAM_CHAT_ID.includes('YOUR_TELEGRAM_CHAT_ID')
-  ) {
-    return // not configured — skip silently
-  }
-
-  const text = [
-    '🚀 *New Nexora Studio Lead*',
-    '',
-    `👤 *Name:* ${name}`,
-    `✉️ *Email:* \`${email}\``,
-    '',
-    '💬 *Message:*',
-    message,
-    '',
-    `🕒 ${new Date().toLocaleString()}`,
-  ].join('\n')
-
   try {
-    await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    await fetch('/api/notify-lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text,
-        parse_mode: 'Markdown',
-        disable_web_page_preview: true,
-      }),
+      body: JSON.stringify({ name, email, message }),
     })
   } catch (err) {
-    // Notification is non-critical — log and move on.
-    console.warn('Telegram notify failed:', err)
+    console.warn('Lead notification failed (non-critical):', err)
   }
 }
 
