@@ -365,7 +365,7 @@ export default function Contact() {
                 >
                   <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" />
                   <span>
-                    Message sent — check your inbox for our auto-reply. We'll be in touch within 24 hours.
+                    Message received — thanks! We'll be in touch within 24 hours.
                   </span>
                 </motion.div>
               )}
