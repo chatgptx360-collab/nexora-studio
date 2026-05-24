@@ -69,9 +69,9 @@ function Field({ icon: Icon, label, type = 'text', name, value, onChange, as = '
 // 🔧 CONTACT FORM INTEGRATIONS
 // ─────────────────────────────────────────────────────────────────────────────
 // 1) Formspree — sends a real email to your inbox + auto-reply to the client.
-//    Sign up at https://formspree.io and replace YOUR_FORMSPREE_ID.
-//    Example: 'https://formspree.io/f/xqkrljgp'
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORMSPREE_ID'
+//    This endpoint is public by design (visible in the network tab); it is
+//    safe to keep in committed client-side source. Swap it at formspree.io.
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mykvdwvv'
 
 // 2) Telegram instant-notification bot — pings your phone the moment a lead
 //    lands. Create a bot via @BotFather on Telegram, then grab your chat id
@@ -122,6 +122,7 @@ async function notifyTelegram({ name, email, message }) {
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
+  const [botField, setBotField] = useState('')
   const [sent, setSent] = useState(false)
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
@@ -131,6 +132,22 @@ export default function Contact() {
   const submit = async (e) => {
     e.preventDefault()
     if (!form.name || !form.email || !form.message) return
+
+    // Honeypot: bots auto-fill every field, but humans never see this one.
+    // Silently pretend success so the bot moves on without a real send.
+    if (botField) {
+      setSent(true)
+      setForm({ name: '', email: '', message: '' })
+      setTimeout(() => setSent(false), 5000)
+      return
+    }
+
+    // Catch malformed emails client-side so they don't silently bounce.
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      setError('Please enter a valid email address.')
+      setTimeout(() => setError(''), 6000)
+      return
+    }
 
     setSending(true)
     setError('')
@@ -160,6 +177,7 @@ export default function Contact() {
               message: form.message,
               _subject: `New inquiry from ${form.name} — Nexora Studio`,
               _replyto: form.email,
+              _gotcha: botField,
             }),
           }),
           notifyTelegram(form),
@@ -289,6 +307,21 @@ export default function Contact() {
             onSubmit={submit}
             className="lg:col-span-3 glass rounded-3xl p-7 flex flex-col gap-4"
           >
+            {/* Honeypot: off-screen, hidden from humans — catches form-filling bots. */}
+            <div aria-hidden="true" style={{ position: 'absolute', left: '-5000px', top: 0 }}>
+              <label>
+                Leave this field empty
+                <input
+                  type="text"
+                  name="_gotcha"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={botField}
+                  onChange={(e) => setBotField(e.target.value)}
+                />
+              </label>
+            </div>
+
             <Field icon={User} label="Your name" name="name" value={form.name} onChange={update} />
             <Field
               icon={Mail}
