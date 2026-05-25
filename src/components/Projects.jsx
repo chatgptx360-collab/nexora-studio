@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ExternalLink, Github, Sparkles, ArrowUpRight } from 'lucide-react'
+import { ExternalLink, Github, Sparkles } from 'lucide-react'
 
 const projects = [
   {
@@ -44,7 +44,7 @@ function Mock({ kind, accent }) {
         <span className="h-2 w-2 rounded-full bg-rose-400/80" />
         <span className="h-2 w-2 rounded-full bg-amber-400/80" />
         <span className="h-2 w-2 rounded-full bg-emerald-400/80" />
-        <span className="ml-3 text-[9px] font-mono text-white/40 truncate">nexora.studio/{kind}</span>
+        <span className="ml-3 text-[9px] font-mono text-white/40 truncate">nexora-forge.vercel.app/{kind}</span>
       </div>
 
       {/* Faux content */}
@@ -154,10 +154,7 @@ export default function Projects() {
 
               {/* Body */}
               <div className="p-5 pt-6">
-                <div className="flex items-start justify-between gap-4">
-                  <h3 className="font-display text-xl font-semibold">{p.title}</h3>
-                  <ArrowUpRight className="h-5 w-5 text-white/40 group-hover:text-white transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </div>
+                <h3 className="font-display text-xl font-semibold">{p.title}</h3>
                 <p className="mt-2 text-sm text-white/60 leading-relaxed">{p.desc}</p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {p.tags.map((t) => (
